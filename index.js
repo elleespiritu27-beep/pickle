@@ -14,9 +14,9 @@ app.listen(PORT, () => {
 
 // 2. Mineflayer Bot Configuration
 const botOptions = {
-  host: 'YOUR_SERVER_IP',       // Put your Minecraft IP here
-  port: 25565,                  // Put your Minecraft Port here (Default is 25565)
-  username: 'ServerKeeperBot',  
+  host: 'pickle4llfe.aternos.me',       // Put your Minecraft IP here
+  port: 30192,                  // Put your Minecraft Port here (Default is 25565)
+  username: 'ServerKeeperBott',  
   version: false                // Auto-detects Minecraft version
 };
 
