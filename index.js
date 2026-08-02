@@ -19,33 +19,31 @@ app.get('/healthz', (req, res) => {
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`[RENDER] Web server successfully bound to port ${PORT}`);
-  
-  // Start the Minecraft connection ONLY after the web host is completely open
   startMinecraftBot();
 });
 
 // ----------------------------------------------------
-// 2. CONFIGURATION VARIABLES (UPDATED FOR NEW PORT)
+// 2. CONFIGURATION VARIABLES (CALIBRATED FOR 1.21.11)
 // ----------------------------------------------------
 const botOptions = {
-  host: 'crackedpvpp.play.hosting', // Your new server address
-  port: 60995,                      // Your exact custom port
-  username: 'ServerKeeperBot',      // The username your bot will use
-  version: '1.21.1'                 // Forces the 1.21.x protocol matching version 1.21.11
+  host: '62.141.62.8',         // Fixed numeric server IP
+  port: 60995,                 // Exact custom connection port
+  username: 'ServerKeeperBot', // Bot network name
+  version: '1.21.1',           // FORCED INTERFACE: Mineflayer protocol match for 1.21.11
+  checkTimeoutInterval: 90000  // Prevents proxy packet timeouts up to 90 seconds
 };
 
 // ----------------------------------------------------
 // 3. CORE BOT LOGIC
 // ----------------------------------------------------
 function startMinecraftBot() {
-  console.log('[MINECRAFT] Initializing connection sequence for 1.21.11...');
+  console.log('[MINECRAFT] Handshaking into server with forced 1.21.11 matching protocol...');
   const bot = mineflayer.createBot(botOptions);
   let afkInterval;
 
   bot.on('spawn', () => {
     console.log(`[SUCCESS] ${bot.username} has spawned in the server.`);
 
-    // Anti-AFK jumping loop every 45 seconds so it never idles out
     clearInterval(afkInterval);
     afkInterval = setInterval(() => {
       if (bot && bot.entity) {
@@ -59,12 +57,12 @@ function startMinecraftBot() {
   });
 
   bot.on('end', (reason) => {
-    console.log(`[DISCONNECTED] Reason: ${reason}. Reconnecting in 15 seconds...`);
+    console.log(`[DISCONNECTED] Reason: ${reason}. Retrying connection loop in 20 seconds...`);
     clearInterval(afkInterval);
-    setTimeout(startMinecraftBot, 15000); 
+    setTimeout(startMinecraftBot, 20000); 
   });
 
   bot.on('error', (err) => {
-    console.log(`[ERROR] ${err.message}`);
+    console.log(`[ERROR] Connection failed: ${err.message}`);
   });
 }
